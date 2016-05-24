@@ -1,0 +1,33 @@
+version: '2'
+
+services:
+    nginx:
+        image: nginx:1.10.0-alpine
+        restart: unless-stopped
+        ports:
+            - "6969:80"
+        volumes:
+            - ./nginx.default.conf:/etc/nginx/conf.d/default.conf
+        volumes_from:
+            - node
+        links:
+            - node:node
+        depends_on:
+            - node
+    npm:
+        image: mhart/alpine-node:6.2.0
+        volumes:
+            - .:/var/www/html
+        working_dir: /var/www/html
+        command: [npm, install]
+
+    node:
+        image: mhart/alpine-node:6.2.0
+        volumes:
+            - .:/var/www/html
+        working_dir: /var/www/html
+        ports:
+            - 3000
+        command: [node, server.js]
+        stdin_open: true
+        tty: true
