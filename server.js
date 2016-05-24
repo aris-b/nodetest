@@ -19,4 +19,4 @@ app.use('/', function(req, res) {
     }
 });
 
-app.listen(3003);
+app.listen(3000);
